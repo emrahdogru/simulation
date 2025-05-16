@@ -1,0 +1,78 @@
+﻿<MudPaper Elevation="1" Width="100%">
+    <table style="width:100%; cursor:pointer;" @onclick="(e) => showCitizenModal = true">
+        <tr>
+            <td class="text-end">Total citizen</td>
+            <td>:</td>
+            <td class="text-end">@Section.Citizens.Count</td>
+        </tr>
+        <tr>
+            <td class="text-end">Unemployed</td>
+            <td>:</td>
+            <td class="text-end">@Section.UnemployedCitizen</td>
+        </tr>
+        <tr>
+            <td class="text-end">Free Bed</td>
+            <td>:</td>
+            <td class="text-end">@Section.FreeBed</td>
+        </tr>
+    </table>
+</MudPaper>
+
+<MudDialog @bind-Visible="showCitizenModal" Options="new(){  }">
+    <TitleContent>Citizens</TitleContent>
+    <DialogContent>
+        <MudDataGrid T="Citizen" Items="Section.Citizens" Dense="true" Hover="true" Bordered="true" FixedHeader="true" Height="400px;" RowClick="((e) => { selectedCitizen = e.Item; })">
+            <Columns>
+                <PropertyColumn Property="x => x.Name" Title="Name"></PropertyColumn>
+                <PropertyColumn Property="x => x.Age" Title="Age"></PropertyColumn>
+                <PropertyColumn Property="x => x.WorkPlace" Title="Workplace"></PropertyColumn>
+            </Columns>
+        </MudDataGrid>
+    </DialogContent>
+</MudDialog>
+
+<MudDialog @bind-Visible="showCitizenDetail">
+    <TitleContent>@selectedCitizen.Name</TitleContent>
+    <DialogContent>
+        @if (selectedCitizen != null)
+        {
+            <div>
+                <p>Age: @selectedCitizen.Age</p>
+                <p>Workplace: @selectedCitizen.WorkPlace</p>
+            </div>
+            <table>
+                <tbody>
+                    @foreach(var c in selectedCitizen.GetLast7DaysNutrients())
+                    {
+                        <tr>
+                            <td>@c.Value.ToString("N2")</td>
+                            <td>@c.Key</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </DialogContent>
+</MudDialog>
+
+@code {
+    private bool showCitizenModal = false;
+    private Citizen? selectedCitizen = null;
+
+    private bool showCitizenDetail
+    {
+        get
+        {
+            return selectedCitizen != null;
+        }
+        set
+        {
+            if (value == false)
+            {
+                selectedCitizen = null;
+            }
+        }
+    }
+
+    [Parameter, EditorRequired] public required Section Section { get; set; }
+}

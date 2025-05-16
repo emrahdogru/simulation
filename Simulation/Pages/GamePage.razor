@@ -1,0 +1,16 @@
+﻿@using Simulation.Pages.GameComponents
+
+<MudChip T="string" Variant="Variant.Outlined" Color="Color.Primary" Style="position:fixed; left:0; top:0; margin:20px;">@Game.Time</MudChip>
+<MudToggleGroup T="GameSpeed" Vertical Color="Color.Primary" SelectionMode="SelectionMode.SingleSelection" @bind-Value="Game.Speed" Style="position:fixed; left:0; top:70px; margin:20px;">
+    <MudToggleItem Value="GameSpeed.Pause"><MudIcon Icon="@Icons.Material.Filled.Pause" /></MudToggleItem>
+    <MudToggleItem Value="GameSpeed.Normal"><MudIcon Icon="@Icons.Material.Filled.PlayArrow" /></MudToggleItem>
+    <MudToggleItem Value="GameSpeed.Fast"><MudIcon Icon="@Icons.Material.Filled.Forward" /></MudToggleItem>
+    <MudToggleItem Value="GameSpeed.Faster"><MudIcon Icon="@Icons.Material.Filled.FastForward" /></MudToggleItem>
+</MudToggleGroup>
+<MudFab Color="Color.Primary" OnClick="(e) => OnMenuClick.InvokeAsync()" StartIcon="@Icons.Material.Filled.Menu" Style="position:fixed; right:0; top:0; margin:20px;" />
+
+<SectionManager Game="Game"></SectionManager>
+@code {
+    [Parameter] public required Game Game { get; set; }
+    [Parameter] public EventCallback OnMenuClick { get; set; }
+}

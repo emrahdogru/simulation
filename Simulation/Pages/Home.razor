@@ -1,0 +1,42 @@
+﻿@page "/"
+
+@inject ISnackbar snackbar
+
+@if(menu == MainMenuEnum.NewGame)
+{
+    <NewGamePage OnGoBack="() => menu = MainMenuEnum.MainMenu" OnMapSelect="HandleMapSelect" />
+}
+else if(menu == MainMenuEnum.LoadGame)
+{
+    <LoadGamePage OnGoBack="() => menu = MainMenuEnum.MainMenu" />
+}
+else if(menu == MainMenuEnum.SaveGame && game != null)
+{
+    <SaveGamePage OnGoBack="() => menu = MainMenuEnum.MainMenu" Game="game" />
+}
+else if(menu == MainMenuEnum.InGame && game != null)
+{
+    <GamePage Game="game" OnMenuClick="() => menu = MainMenuEnum.MainMenu" />
+}
+else
+{
+    <MainMenuPage @bind-Value="menu" Game="game" />
+}
+@code {
+    private MainMenuEnum menu = MainMenuEnum.MainMenu;
+    private Game? game = null;
+
+    private async Task HandleMapSelect(MapTemplate mapTemplate)
+    {
+        game = new Game(mapTemplate);
+        game.OnException += HandleGameException;
+        game.OnTick += async (sender, e) => await InvokeAsync(StateHasChanged);
+        menu = MainMenuEnum.InGame;
+        await game.Start();
+    }
+
+    private void HandleGameException(object? game, Exception ex)
+    {
+        snackbar.Add(ex.Message, Severity.Error);
+    }
+}

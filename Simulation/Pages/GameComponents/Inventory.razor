@@ -1,0 +1,20 @@
+@using Simulation.Domain.Items.Buildings
+
+<MudPaper Elevation="1" Width="100%">
+    <h5>Inventory</h5>
+    <table>
+        <tbody>
+            @foreach(var i in Section.Items)
+            {
+                <tr>
+                    <td style="text-align:right">@(((int)i.Value).ToString("N0"))</td>
+                    <td>@i.Key.Name</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</MudPaper>
+
+@code {
+    [Parameter, EditorRequired] public required Section Section { get; set; }
+}

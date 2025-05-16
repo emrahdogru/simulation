@@ -1,0 +1,14 @@
+﻿@foreach(var i in Items)
+{
+    <MudChip T="string" Size="Size.Small" Variant="Variant.Text" Color="GetColor(i.Key, i.Value)">@i.Value @i.Key.Name</MudChip>
+}
+
+@code {
+    private Color GetColor(IItem item, float amount)
+    {
+        return Section.Items.HasEnough(item, amount) ? Color.Default : Color.Warning;
+    }
+
+    [Parameter, EditorRequired] public required ItemCollection<IItem> Items { get; set; }
+    [Parameter, EditorRequired] public required Section Section { get; set; }
+}

@@ -1,0 +1,37 @@
+﻿@using Simulation.Domain.Items.Buildings
+@using Simulation.Pages.GameComponents.BuildingComponents
+<h3>@Section.Name</h3>
+<ConstructBuilding Section="Section" OnConstructionStarted="HandleConstructionStarted" />
+<MudGrid Style="width:100%;">
+    <MudItem md="9">
+        <MudGrid>
+            @foreach (var b in Section.Buildings)
+            {
+                <MudItem md="6">
+                    <MudPaper Elevation="1" Width="100%;">
+                        <BuildingItem Building="@b" />
+                    </MudPaper>
+                </MudItem>
+            }
+        </MudGrid>
+        
+    </MudItem>
+    <MudItem md="3">
+        <MudGrid Spacing="3">
+            <CitizenSummary Section="Section" />
+            <CapacityViewer Section="Section" />
+            <Inventory Section="Section" />
+        </MudGrid>
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+    [Parameter, EditorRequired] public required Section Section { get; set; }
+
+    private void HandleConstructionStarted(BuildingContainer building)
+    {
+        StateHasChanged();
+    }
+}

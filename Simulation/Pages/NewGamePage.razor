@@ -1,0 +1,23 @@
+﻿<MudFab StartIcon="@Icons.Material.Rounded.ArrowBack" Label="BACK" OnClick="OnGoBack" Style="position:absolute; margin:30px;"/>
+<h1 style="text-align:center; padding: 50px;">SELECT MAP</h1>
+
+<MudGrid Justify="Justify.Center">
+    @foreach(var mt in MapTemplate.MapTemplates)
+    {
+        <MudItem>
+            <MudCard Style="width:400px; margin:auto; cursor:pointer;" @onclick="() => OnMapSelect.InvokeAsync(mt)">
+                <MudCardMedia Image="https://cf.geekdo-images.com/N6orhXAjC7kA8ODnPkhSlg__original/img/lpTKv0SugbXF_hsQMdCuUAu_pCY=/0x0/filters:format(jpeg)/pic464306.jpg" Height="150" />
+                <MudCardContent>
+                    <MudText Typo="Typo.h5">@mt.Name</MudText>
+                    <MudText Typo="Typo.body2">@mt.Description</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    }
+</MudGrid>
+
+@code
+{
+    [Parameter] public EventCallback OnGoBack { get; set; }
+    [Parameter] public EventCallback<MapTemplate> OnMapSelect { get; set; }
+}

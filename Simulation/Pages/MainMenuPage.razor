@@ -1,0 +1,38 @@
+﻿<MudContainer Class="d-flex justify-center align-center" Style="min-height: 80vh;">
+    <MudPaper Width="300px" Style="text-align:center;">
+        <MudList T="MainMenuEnum" SelectionMode="SelectionMode.SingleSelection" SelectedValue="Value" SelectedValueChanged="ValueChanged">
+            <MudListSubheader>
+                SIMULATION
+            </MudListSubheader>
+
+            @if (Game != null)
+            {
+                <MudListItem Text="SAVE GAME" Style="text-align:center;" Value="MainMenuEnum.InGame">
+                    CONTINUE
+                </MudListItem>
+                <MudListItem Text="SAVE GAME" Style="text-align:center;" Value="MainMenuEnum.SaveGame">
+                    SAVE GAME
+                </MudListItem>
+                <MudDivider />
+            }
+
+            <MudListItem Text="NEW GAME" Style="text-align:center;" Value="MainMenuEnum.NewGame">
+                NEW GAME
+            </MudListItem>
+            <MudListItem Text="LOAD GAME" Style="text-align:center;" Value="MainMenuEnum.LoadGame">
+                LOAD GAME
+            </MudListItem>
+            <MudDivider />
+            <MudListSubheader Class="mb-n3">
+                SETTINGS
+            </MudListSubheader>
+        </MudList>
+    </MudPaper>
+</MudContainer>
+
+@code 
+{
+    [Parameter] public MainMenuEnum Value { get; set; }
+    [Parameter] public EventCallback<MainMenuEnum> ValueChanged { get; set; }
+    [Parameter] public Game? Game { get; set; }
+}

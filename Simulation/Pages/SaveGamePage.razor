@@ -1,0 +1,7 @@
+﻿<MudFab StartIcon="@Icons.Material.Rounded.ArrowBack" Label="BACK" OnClick="OnGoBack" Style="position:absolute; margin:30px;" />
+<h1 style="text-align:center; padding: 50px;">SAVE GAME</h1>
+
+@code {
+    [Parameter, EditorRequired] public required Game Game { get; set; }
+    [Parameter] public EventCallback OnGoBack { get; set; }
+}

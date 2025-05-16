@@ -1,0 +1,43 @@
+﻿@using Simulation.Domain.Items.Buildings
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => isVisible = true">Construct Building</MudButton>
+<MudDialog @bind-Visible="isVisible">
+    <DialogContent>
+        <h4>Choose the building you want to construct.</h4>
+        <MudGrid>
+            <MudItem>
+            @foreach (var b in BuildingItems)
+            {
+                <MudPaper Elevation="2" @onclick="(e) => HandleBuildingSelect(b)" Width="100%">
+                    <h3>@b.Name</h3>
+                    <ResourceViewer Section="Section" Items="b.Receipt.Ingredients"/>
+                </MudPaper>
+            }
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+</MudDialog>
+
+
+
+@code {
+    private bool isVisible = false;
+    private IEnumerable<Building> BuildingItems => IItem.GetItemList().OfType<Building>();
+
+    [Parameter, EditorRequired] public required Section Section { get; set; }
+
+    private async Task HandleBuildingSelect(Building building)
+    {
+        try
+        {
+            var container = Section.Build(building);
+            isVisible = false;
+            await OnConstructionStarted.InvokeAsync(container);
+        }
+        catch
+        {
+            // DO NOTHING
+        }
+    }
+
+    [Parameter] public EventCallback<BuildingContainer> OnConstructionStarted { get; set; }
+}

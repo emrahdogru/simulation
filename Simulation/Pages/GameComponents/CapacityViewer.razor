@@ -1,0 +1,14 @@
+﻿<MudPaper Elevation="1" Width="100%">
+    <b>CAPACITIES</b>
+@foreach(var c in Section.Capacities)
+{
+    <div>
+        @c.Key (@c.Value.Used / @c.Value.Capacity)
+        <MudProgressLinear Color="Color.Primary" Size="Size.Small" Value="c.Value.Used" Max="c.Value.Capacity" />
+    </div>
+}
+</MudPaper>
+
+@code {
+    [Parameter, EditorRequired] public required Section Section { get; set; }
+}

@@ -1,0 +1,53 @@
+﻿<div style="display:flex;">
+    <div style="flex-shrink:0; width:120px; height:120px; background-size:cover; background-clip:content-box; background-repeat:no-repeat; background-image:url('https://w7.pngwing.com/pngs/1002/413/png-transparent-factory-illustration-recycling-factory-waste-infographic-warehouse-factory-miscellaneous-computer-network-electronics.png')">
+
+    </div>
+    <div style="flex-grow: 1; padding:4px 8px;">
+        @if(Building.MaxWorkerCount > 0)
+        {
+            <div style="float:right;"><MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" /> @Building.Workers.Count()/@Building.WorkerCount</div>
+        }
+        <div style="font-weight:bold;">@Building.Building.Name</div>
+
+        @if (Building.MaxWorkerCount > 0)
+        {
+            <MudSlider TickMarks="true" Step="1" @bind-Value="Building.WorkerCount" Max="Building.MaxWorkerCount" Min="0" />
+        }
+
+        @if (Building.IsCompleted)
+        {
+            if(Building.Producer is ContinuousProducer continuousProducer)
+            {
+                <MudChipSet T="IItem" @bind-SelectedValue="continuousProducer.ProducingItem" CheckMark SelectionMode="SelectionMode.SingleSelection">
+                @foreach (var i in Building.Building.ManufacturableItems)
+                {
+                    <MudChip T="IItem" Size="Size.Small" Variant="Variant.Outlined" Value="i">@i.Name</MudChip>
+                }
+                </MudChipSet>
+            }
+            else if (Building.Producer is BreedingProducer breedingProducer)
+            {
+                <span>@breedingProducer.Amount @breedingProducer.ProducingItem.Name</span> <i>(Max: @breedingProducer.Limit)</i>
+            }
+            else
+            {
+                <MudText Typo="Typo.body2">No producer</MudText>
+            }
+        }
+        else
+        {
+            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Color="Color.Warning">Under Construction</MudChip>
+            <MudText HtmlTag="div" Typo="Typo.body2">Progress: %@((Building.CompletedDuration / @Building.Building.Receipt.WorkForce * 100).ToString("N0"))</MudText>
+            <MudProgressLinear Color="Color.Primary" Size="Size.Small" Value="Building.CompletedDuration" Max="Building.Building.Receipt.WorkForce" />
+        }
+        @if(Building.Exception != null)
+        {
+            <MudText Typo="Typo.body2" Color="Color.Error"><MudIcon Icon="@Icons.Material.Filled.Warning" Size="Size.Small"/> @Building.Exception.Message</MudText>
+        }
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required BuildingContainer Building { get; set; }
+}

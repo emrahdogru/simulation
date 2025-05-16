@@ -1,0 +1,31 @@
+﻿<MudContainer>
+    <MudGrid Spacing="3">
+        <MudItem lg="2">
+            <MudPaper Elevation="1">
+                <MudNavMenu>
+                    <MudNavLink OnClick="(e) => SelectedSection = null">General View</MudNavLink>
+                    <MudDivider Class="my-2" />
+                    @foreach (var s in Game.Sections)
+                    {
+                        <MudNavLink OnClick="(e) => SelectedSection = s">@s.Name</MudNavLink>
+                    }
+                </MudNavMenu>
+            </MudPaper>
+        </MudItem>
+        <MudItem lg="10">
+            @if(SelectedSection == null)
+            {
+                <h2>GENERAL VIEW</h2>
+            }
+            else
+            {
+                <SectionDetail Section="SelectedSection" />
+            }
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+@code {
+    [Parameter, EditorRequired] public required Game Game { get; set; }
+
+    public Section? SelectedSection { get; set; }
+}
